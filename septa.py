@@ -56,6 +56,12 @@ def make_redisconn(url):
         auth, loc = netloc.split('@')
     except ValueError:
         loc = netloc
+        auth = ''
+
+    try:
+        username, password = auth.split(':')
+    except ValueError:
+        password = None
 
     try:
         host, port = loc.split(':')
@@ -66,5 +72,5 @@ def make_redisconn(url):
     if path == '':
         path = '0'
 
-    return redis.StrictRedis(host=host, port=port, db=path)
+    return redis.StrictRedis(host=host, port=port, db=path, password=password)
 
