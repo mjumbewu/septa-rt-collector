@@ -34,7 +34,10 @@ def collectroutes(dbconn, redisconn):
         for vehicledata in routedata['bus']:
             vehiclestring = json.dumps(vehicledata)
 
+            # Remove the offset attribute from the data as this is the only
+            # piece that will change without the location being updated.
             vehicledata.pop('Offset')
+            vehicledata.pop('Offset_sec')
             idstring = json.dumps(vehicledata, sort_keys=True)
 
             if septa.markvehicle(redisconn, idstring):
